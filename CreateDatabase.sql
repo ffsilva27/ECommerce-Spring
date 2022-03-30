@@ -38,6 +38,10 @@ inner join compra_produto cp on c.id = cp.id_compra
 inner join produto p on cp.id_produto = p.id
 where id_compra = 1
 
+-- ESSE SELECT SOMA AS COMPRAS E AGRUPA POR CPF SEPARANDO POR COMPRAS DIFERENTES
+select sum(c.valor_total_compra), c.cpf_cliente  from compra c
+group by c.cpf_cliente, c.id
+
 
 -- CASO PRECISE DELETAR AS TABELAS
 --DROP TABLE compra_produto 
