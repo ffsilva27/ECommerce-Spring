@@ -1,6 +1,9 @@
 package com.example.ProjetoModuloBD.controller;
 
+import com.example.ProjetoModuloBD.dto.ProdutoRequest;
 import com.example.ProjetoModuloBD.dto.ProdutoResponse;
+import com.example.ProjetoModuloBD.exceptions.BadRequest;
+import com.example.ProjetoModuloBD.exceptions.NotFound;
 import com.example.ProjetoModuloBD.model.Produto;
 import com.example.ProjetoModuloBD.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,19 +26,24 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @GetMapping
-    public Page<ProdutoResponse> getAll(){
-        Pageable pageable = PageRequest.of(0,5);
-        List<ProdutoResponse> produtoResponses = ProdutoResponse.convert(produtoService.findAll());
-        Page<ProdutoResponse> produtoReturn = new PageImpl<ProdutoResponse>(produtoResponses, pageable, produtoResponses.size());
-        return produtoReturn;
+    public ResponseEntity<Object> getAll(){
+        Page<ProdutoResponse> produtoReturn = produtoService.findAll();
+        if(produtoReturn.isEmpty()){
+            return new ResponseEntity<>(produtoReturn, HttpStatus.NO_CONTENT);
+        }else{
+            return ResponseEntity.ok(produtoReturn);
+        }
     }
 
     @GetMapping("/codigo")
-    public Page<ProdutoResponse> getProductByCode(@RequestParam(value = "cod") String codigo){
-        Pageable pageable = PageRequest.of(0,5);
-        List<ProdutoResponse> produtoResponses = ProdutoResponse.convert(produtoService.findByCodigo(codigo));
-        Page<ProdutoResponse> produtoReturn = new PageImpl<ProdutoResponse>(produtoResponses, pageable, produtoResponses.size());
-        return produtoReturn;
+    public ResponseEntity<Object> getProductByCode(@RequestParam(value = "cod") String codigo) throws NotFound {
+        ProdutoResponse produtoReturn = produtoService.findByCodigo(codigo);
+        return ResponseEntity.ok(produtoReturn);
+    }
+
+    @PostMapping
+    public ProdutoResponse createProduct(@RequestBody ProdutoRequest produtoRequest) throws BadRequest {
+        return produtoService.createProduct(produtoRequest);
     }
 
 }

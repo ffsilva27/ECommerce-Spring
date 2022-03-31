@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer>, JpaSpecificationExecutor<Produto> {
 
-    public List<Produto> findByCodigo(String codigo);
+    public Produto findByCodigo(String codigo);
 }
