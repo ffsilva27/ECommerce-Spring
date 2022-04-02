@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/produto")
@@ -35,10 +36,14 @@ public class ProdutoController {
         }
     }
 
-    @GetMapping("/codigo")
-    public ResponseEntity<Object> getProductByCode(@RequestParam(value = "cod") String codigo) throws NotFound {
-        ProdutoResponse produtoReturn = produtoService.findByCodigo(codigo);
-        return ResponseEntity.ok(produtoReturn);
+    @GetMapping("/")
+    public ResponseEntity<Object> getProductByCode(@RequestParam(value = "cod", defaultValue = "AAA") String codigo) throws NotFound {
+        if(Objects.equals(codigo, "AAA")){
+            return this.getAll();
+        }else{
+            ProdutoResponse produtoReturn = produtoService.findByCodigo(codigo);
+            return ResponseEntity.ok(produtoReturn);
+        }
     }
 
     @PostMapping
