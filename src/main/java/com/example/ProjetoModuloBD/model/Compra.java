@@ -22,7 +22,7 @@ public class Compra {
     private LocalDateTime data_compra;
 
     @Column(name = "cpf_cliente")
-    private String cpf_cliente;
+    private String cpf;
 
     @Column(name = "valor_total_compra")
     private Double valor_total_compra;

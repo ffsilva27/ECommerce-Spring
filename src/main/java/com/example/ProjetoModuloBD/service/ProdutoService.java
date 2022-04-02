@@ -76,4 +76,12 @@ public class ProdutoService {
         }
         return  prefixo + sufixo;
     }
+
+    public List<Produto> findAllProductsWithCode(List<String> produtos) {
+        return produtoRepository.findAllByCodigoIn(produtos);
+    }
+
+    public Double sumValor(List<String> codigos) {
+        return produtoRepository.sumPrecos(codigos);
+    }
 }

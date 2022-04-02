@@ -4,19 +4,13 @@ import com.example.ProjetoModuloBD.dto.ProdutoRequest;
 import com.example.ProjetoModuloBD.dto.ProdutoResponse;
 import com.example.ProjetoModuloBD.exceptions.BadRequest;
 import com.example.ProjetoModuloBD.exceptions.NotFound;
-import com.example.ProjetoModuloBD.model.Produto;
 import com.example.ProjetoModuloBD.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @RestController

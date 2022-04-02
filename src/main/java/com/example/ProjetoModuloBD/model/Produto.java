@@ -29,12 +29,7 @@ public class Produto {
     @Column(name = "qtde_disponivel")
     private Integer qtde_disponivel;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "compra_produto",
-            joinColumns = { @JoinColumn(name = "id_produto") },
-            inverseJoinColumns = { @JoinColumn(name = "id_compra") }
-    )
+    @ManyToMany(mappedBy = "produtos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Compra> compra;
 
 }
