@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 
 @Service
@@ -43,17 +44,36 @@ public class ProdutoService {
     }
 
     public ProdutoResponse createProduct(ProdutoRequest produtoRequest) throws BadRequest {
-        Produto produtoVerificado = findByCodigoRaiz(produtoRequest.getCodigo());
-        if(produtoVerificado == null){
-            Produto produto = new Produto();
-            produto.setCodigo(produtoRequest.getCodigo());
-            produto.setNome(produtoRequest.getNome());
-            produto.setPreco(produtoRequest.getPreco());
-            produto.setQtde_disponivel(produtoRequest.getQtdeDisponivel());
+        String productCode = this.createProductCode();
+        Produto produtoVerificado = findByCodigoRaiz(productCode);
 
-            return new ProdutoResponse(produtoRepository.save(produto));
-        }else {
-            throw new BadRequest("Código do produto já esta em uso.");
+        while (produtoVerificado != null){
+            productCode = this.createProductCode();
+            produtoVerificado = findByCodigoRaiz(productCode);
         }
+
+        Produto produto = new Produto();
+        produto.setCodigo(productCode);
+        produto.setNome(produtoRequest.getNome());
+        produto.setPreco(produtoRequest.getPreco());
+        produto.setQtde_disponivel(produtoRequest.getQtdeDisponivel());
+
+        return new ProdutoResponse(produtoRepository.save(produto));
+
+    }
+
+    public String createProductCode(){
+        Random ra = new Random();
+        Character prefixo = (char) (ra.nextInt(26) + 'A');
+        Integer nAleatorio = ra.nextInt(999);
+        String sufixo = "";
+        if(nAleatorio>=0 && nAleatorio<=9){
+            sufixo = "00" + Integer.toString(nAleatorio);
+        }else if(nAleatorio>=10 && nAleatorio<=99){
+            sufixo = "0" + Integer.toString(nAleatorio);
+        }else{
+            sufixo = Integer.toString(nAleatorio);
+        }
+        return  prefixo + sufixo;
     }
 }
