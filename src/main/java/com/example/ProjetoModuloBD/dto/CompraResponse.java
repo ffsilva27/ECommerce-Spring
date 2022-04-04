@@ -17,14 +17,14 @@ public class CompraResponse {
     private LocalDateTime data_compra;
     private String cpf_cliente;
     private Double valor_total_compra;
-    private List<Produto> produtos;
+    private List<ProdutoResponse> produtos;
 
-    public CompraResponse convert(Compra compra){
+    public static CompraResponse convert(Compra compra){
         CompraResponse compraReturn = new CompraResponse();
         compraReturn.setData_compra(compra.getData_compra());
-        compraReturn.setCpf_cliente(compra.getCpf_cliente());
+        compraReturn.setCpf_cliente(compra.getCpf());
         compraReturn.setValor_total_compra(compra.getValor_total_compra());
-        compraReturn.setProdutos(compra.getProdutos());
+        compraReturn.setProdutos(ProdutoResponse.convert(compra.getProdutos()));
         return compraReturn;
     }
 
