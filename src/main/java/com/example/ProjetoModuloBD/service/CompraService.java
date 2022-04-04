@@ -12,27 +12,20 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class CompraService {
 
     private final CompraRepository compraRepository;
     private final ProdutoService produtoService;
 
-    public Page<CompraResponse> listAll(Pageable pageable) {
-        return compraRepository
-                .findAll(pageable)
-                .map(CompraResponse::convert);
-    }
-
     public Page<CompraResponse> listByCPF(String cpf, Pageable pageable) {
-        Specification<Compra> specification= Specification.where(null);
+        Specification<Compra> specification = Specification.where(null);
         if (cpf != null) {
-            specification.and(CompraSpecification.filterByCpf(cpf));
+            specification = Specification.where(CompraSpecification.filterOneByCpf(cpf));
         }
         return compraRepository
-//                .findAll(specification, pageable)
-                .findByCpf(cpf, pageable)
+                .findAll(specification, pageable)
                 .map(CompraResponse::convert);
     }
 

@@ -22,11 +22,6 @@ public class CompraController {
     private final CompraService compraService;
 
     @GetMapping()
-    public Page<CompraResponse> listAllCompras(Pageable pageable) {
-        return compraService.listAll(pageable);
-    }
-
-    @GetMapping("/")
     public Page<CompraResponse> listCompras(
             @RequestParam(name = "cpf", required = false) String cpf,
             Pageable pageable

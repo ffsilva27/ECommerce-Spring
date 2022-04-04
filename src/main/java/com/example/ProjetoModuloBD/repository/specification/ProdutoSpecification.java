@@ -1,13 +1,14 @@
 package com.example.ProjetoModuloBD.repository.specification;
 
 import com.example.ProjetoModuloBD.model.Compra;
+import com.example.ProjetoModuloBD.model.Produto;
 import org.springframework.data.jpa.domain.Specification;
 
-public class CompraSpecification {
+public class ProdutoSpecification {
 
-    public static Specification<Compra> filterOneByCpf(String cpf) {
+    public static Specification<Produto> filterByCodigo(String codigo) {
         return (root, query, builder) ->
-                builder.like(root.get("cpf"), cpf);
+                builder.like(root.get("codigo"), codigo);
     }
 
 }
