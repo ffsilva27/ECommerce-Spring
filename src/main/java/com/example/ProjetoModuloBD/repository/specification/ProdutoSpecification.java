@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class ProdutoSpecification {
 
-    public static Specification<Produto> filterByCodigo(String codigo) {
+    public static Specification<Produto> filterOneByCodigo(String codigo) {
         return (root, query, builder) ->
                 builder.like(root.get("codigo"), codigo);
     }

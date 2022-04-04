@@ -6,11 +6,11 @@ import com.example.ProjetoModuloBD.exceptions.BadRequest;
 import com.example.ProjetoModuloBD.exceptions.NotFound;
 import com.example.ProjetoModuloBD.model.Produto;
 import com.example.ProjetoModuloBD.repository.ProdutoRepository;
+import com.example.ProjetoModuloBD.repository.specification.ProdutoSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,34 +22,27 @@ import java.util.Random;
 public class ProdutoService {
     private final ProdutoRepository produtoRepository;
 
-    public Page<ProdutoResponse> findAll(){
-        Pageable pageable = PageRequest.of(0,5);
-        List<ProdutoResponse> produtoResponses = ProdutoResponse.convert(produtoRepository.findAll());
-        Page<ProdutoResponse> produtoReturn = new PageImpl<ProdutoResponse>(produtoResponses, pageable, produtoResponses.size());
-        return produtoReturn;
+    public Page<ProdutoResponse> listByCodigo(String codigo, Pageable pageable) {
+        Specification<Produto> specification = Specification.where(null);
+        if (codigo != null) {
+            specification = Specification.where(ProdutoSpecification.filterOneByCodigo(codigo));
+        }
+        return produtoRepository
+                .findAll(specification, pageable)
+                .map(x -> new ProdutoResponse(x));
     }
 
-    public Produto findByCodigoRaiz(String codigo){
+    public Produto findByCodigo(String codigo){
         return produtoRepository.findByCodigo(codigo);
     }
 
-    public ProdutoResponse findByCodigo(String codigo) throws NotFound {
-        Produto produto = findByCodigoRaiz(codigo);
-        if(produto == null){
-            throw new NotFound("Produto não encontrado!");
-        }else{
-            ProdutoResponse produtoResponse = new ProdutoResponse(produto);
-            return produtoResponse;
-        }
-    }
-
-    public ProdutoResponse createProduct(ProdutoRequest produtoRequest) throws BadRequest {
+    public ProdutoResponse createProduct(ProdutoRequest produtoRequest) {
         String productCode = this.createProductCode();
-        Produto produtoVerificado = findByCodigoRaiz(productCode);
+        Produto produtoVerificado = findByCodigo(productCode);
 
         while (produtoVerificado != null){
             productCode = this.createProductCode();
-            produtoVerificado = findByCodigoRaiz(productCode);
+            produtoVerificado = findByCodigo(productCode);
         }
 
         Produto produto = new Produto();
