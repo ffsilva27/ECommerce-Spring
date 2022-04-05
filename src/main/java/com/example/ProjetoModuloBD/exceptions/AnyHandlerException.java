@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class AnyHandlerException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {BadRequest.class})
-    public ResponseEntity<Object> handlerExceptionCodigoUtilizado(Exception e, WebRequest request){
+    public ResponseEntity<ErroMsg> handlerExceptionCodigoUtilizado(Exception e, WebRequest request){
         String errorDescription = e.getLocalizedMessage();
         if(errorDescription == null) errorDescription = e.toString();
         ErroMsg erroMsg = new ErroMsg(errorDescription);
@@ -23,7 +23,7 @@ public class AnyHandlerException extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {NotFound.class})
-    public ResponseEntity<Object> handlerExceptionProdutoNaoEncontrado(Exception e, WebRequest request){
+    public ResponseEntity<ErroMsg> handlerExceptionProdutoNaoEncontrado(Exception e, WebRequest request){
         String errorDescription = e.getLocalizedMessage();
         if(errorDescription == null) errorDescription = e.toString();
         ErroMsg erroMsg = new ErroMsg(errorDescription);

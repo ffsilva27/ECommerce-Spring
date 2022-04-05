@@ -2,6 +2,7 @@ package com.example.ProjetoModuloBD.service;
 
 import com.example.ProjetoModuloBD.dto.CompraRequest;
 import com.example.ProjetoModuloBD.dto.CompraResponse;
+import com.example.ProjetoModuloBD.exceptions.BadRequest;
 import com.example.ProjetoModuloBD.model.Compra;
 import com.example.ProjetoModuloBD.repository.CompraRepository;
 import com.example.ProjetoModuloBD.repository.specification.CompraSpecification;
@@ -29,12 +30,16 @@ public class CompraService {
                 .map(CompraResponse::convert);
     }
 
-    public CompraResponse createCompra(CompraRequest compraRequest) {
+    public CompraResponse createCompra(CompraRequest compraRequest) throws BadRequest {
         Compra compra = new Compra();
         compra.setData_compra(compraRequest.getData());
         compra.setCpf(compraRequest.getCpf());
         compra.setProdutos(produtoService.findAllProductsWithCode(compraRequest.getProdutos()));
         compra.setValor_total_compra(produtoService.sumValor(compraRequest.getProdutos()));
+
+        if(compra.getValor_total_compra() == null){
+            throw new BadRequest("O campo produtos deve ser preenchido.");
+        }
 
         compraRepository.save(compra);
 
