@@ -46,4 +46,25 @@ group by c.cpf_cliente, c.id
 -- CASO PRECISE DELETAR AS TABELAS
 --DROP TABLE compra_produto 
 --DROP TABLE produto 
---DROP TABLE compra 
+--DROP TABLE compra
+
+create table users(
+                      username varchar not null primary key,
+                      password varchar not null,
+                      enabled boolean not null
+);
+
+create table authorities (
+                             username varchar not null,
+                             authority varchar not null,
+                             constraint fk_authorities_users foreign key(username) references users(username)
+);
+create unique index ix_auth_username on authorities (username,authority);
+
+INSERT INTO users (username, password, enabled)
+values ('admin',
+        '$2a$12$K.vLLdlxuoJPUyfYlqb9ouKrohdJOioDdYBL3TfQJpIxsT2ChcHVW',
+        true);
+
+INSERT INTO authorities (username, authority)
+values ('admin', 'ROLE_ADMIN');
