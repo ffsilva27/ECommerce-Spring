@@ -3,6 +3,7 @@ package com.example.ProjetoModuloBD.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -29,7 +30,7 @@ public class Produto {
     @Column(name = "qtde_disponivel")
     private Integer qtde_disponivel;
 
-    @ManyToMany(mappedBy = "produtos", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Compra> compra;
+    @OneToMany(mappedBy = "produto")
+    private List<CompraProduto> compra =  new ArrayList<>();
 
 }

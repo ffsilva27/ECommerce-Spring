@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter @Setter
 public class CompraRequest {
@@ -15,5 +16,5 @@ public class CompraRequest {
     @NotEmpty
     private String cpf;
     @NotEmpty
-    private List<String> produtos;
+    private Map<String, Integer> produtos;
 }

@@ -7,12 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer>, JpaSpecificationExecutor<Produto> {
 
-    Produto findByCodigo(String codigo);
+    Optional<Produto> findByCodigo(String codigo);
 
     List<Produto> findAllByCodigoIn(List<String> codigos);
 

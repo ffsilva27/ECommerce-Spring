@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,12 +28,7 @@ public class Compra {
     @Column(name = "valor_total_compra")
     private Double valor_total_compra;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "compra_produto",
-            joinColumns = { @JoinColumn(name = "id_compra") },
-            inverseJoinColumns = { @JoinColumn(name = "id_produto") }
-    )
-    private List<Produto> produtos;
+    @OneToMany(mappedBy = "compra")
+    private List<CompraProduto> produtos =  new ArrayList<>();
 
 }
