@@ -1,7 +1,7 @@
 create database loja;
 
 create table produto (
-	id serial PRIMARY KEY,
+    id serial PRIMARY KEY,
     codigo varchar NOT NULL,
     nome varchar NOT NULL,
     preco double precision CHECK(preco > 0),
@@ -18,6 +18,7 @@ create table compra (
 create table compra_produto(
     id_produto integer references produto(id),
     id_compra integer references compra(id),
+    quantidade integer not null default 1,
     primary key(id_produto, id_compra)
 );
    
@@ -68,3 +69,4 @@ values ('admin',
 
 INSERT INTO authorities (username, authority)
 values ('admin', 'ROLE_ADMIN');
+

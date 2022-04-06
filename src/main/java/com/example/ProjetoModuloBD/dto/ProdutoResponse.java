@@ -1,6 +1,7 @@
 package com.example.ProjetoModuloBD.dto;
 
 import com.example.ProjetoModuloBD.model.Compra;
+import com.example.ProjetoModuloBD.model.CompraProduto;
 import com.example.ProjetoModuloBD.model.Produto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,16 @@ public class ProdutoResponse {
     }
 
     public static List<ProdutoResponse> convert(List<Produto> produto){
-        return produto.stream().map(x -> new ProdutoResponse(x)).collect(Collectors.toList());
+        return produto.stream().map(ProdutoResponse::new).collect(Collectors.toList());
+    }
+
+    public static ProdutoResponse convert(CompraProduto produto){
+        ProdutoResponse produtoResponse = new ProdutoResponse();
+
+        produtoResponse.setCodigo(produto.getProduto().getCodigo());
+        produtoResponse.setNome(produto.getProduto().getNome());
+        produtoResponse.setPreco(produto.getProduto().getPreco());
+        produtoResponse.setQtde_disponivel(produto.getProduto().getQtde_disponivel());
+        return produtoResponse;
     }
 }
