@@ -29,7 +29,6 @@ public class CompraService {
     private final CompraRepository compraRepository;
     private final ProdutoService produtoService;
     private final CompraProdutoRepository compraProdutoRepository;
-    private final ProdutoRepository produtoRepository;
 
     public Page<CompraResponse> listByCPF(String cpf, Pageable pageable) {
         Specification<Compra> specification = Specification.where(null);
