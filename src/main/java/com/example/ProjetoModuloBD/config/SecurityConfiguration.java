@@ -24,7 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/produto/**").authenticated()
                 .antMatchers("/compra/**").authenticated()
-                .antMatchers("/user/**").authenticated();
+                .antMatchers("/user/**").permitAll();
     }
 
   @Bean
